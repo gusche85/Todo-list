@@ -1,8 +1,15 @@
 const output = document.getElementById("output");
 const output1 = document.getElementById("output1");
+const output2 = document.getElementById("output2");
+
+function hideAll() {   //erase previous outputs
+  output.style.display = "none";
+  output1.style.display = "none";
+  output2.style.display = "none";
+}
 
 function showTasks() {
-  
+  hideAll();
    fetch('https://jsonplaceholder.typicode.com/todos')
       .then(response => response.json())
       .then(listToDo => {
@@ -14,12 +21,14 @@ function showTasks() {
         const checkMark = complete? '&#9989' : null ;
         toDoListHTML += `<div align= center >${toDo} ${checkMark}</div>`;
       }
-        output.innerHTML = `<h3 style = "text-align: center; text-decoration: underline">Tasks</h3><div>${toDoListHTML}</div><br><br>`;     
+        output.innerHTML = `<h3 style = "text-align: center; text-decoration: underline">Tasks</h3><div>${toDoListHTML}</div><br><br>`; 
+        output.style.display = "block"
         })
   .catch(err => console.error(err));
   }
 
 function userId() {
+  hideAll();
   fetch('https://jsonplaceholder.typicode.com/todos')
     .then(response => response.json())
     .then(listUser => {
@@ -38,13 +47,13 @@ function userId() {
                    <input type="submit" value="Submit" onclick="showList()">`;
 
       output.innerHTML = userHTML;
+      output.style.display = "block"
     })
   .catch(err => console.error(err));
 }
 
 function showList() {
   const selectedUser = document.getElementById("userIdDropdown").value;
-
   fetch(`https://jsonplaceholder.typicode.com/todos?userId=${selectedUser}`)
     .then(response => response.json())
     .then(userList => {
@@ -58,23 +67,26 @@ function showList() {
       }
 
       output1.innerHTML = toDoListHTML; // display under output.innerHTML
+      output1.style.display = "block"
     })
     .catch(err => console.error(err));
 }
 
 function completedTasks() {
+  hideAll();
   fetch('https://jsonplaceholder.typicode.com/todos')
       .then(response => response.json())
       .then(listToDo => {
       const lists = listToDo; 
-        let toDoListHTML = "";
+        let completeHTML = "";
       for (const list of lists) {
         const toDo = list.title;
         const complete = list.completed;
         if(complete) {
-        toDoListHTML += `<div>${toDo}</div>`;}
+        completeHTML += `<div>${toDo}</div>`;}
       }
-        output.innerHTML = `<h3 style = "text-align: center; text-decoration: underline">These tasks has been completed</h3><div>${toDoListHTML}</div><br><br>`;     
+        output2.innerHTML = `<h3 style = "text-align: center; text-decoration: underline">These tasks has been completed</h3><div>${completeHTML}</div><br><br>`;  
+        output2.style.display = "block"
         })
   .catch(err => console.error(err));
   }
